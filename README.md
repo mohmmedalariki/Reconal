@@ -15,6 +15,19 @@
     -   🛠 **DevOps**: Jenkins, Travis CI, .git folders.
 -   **Cross-Platform**: Works on macOS, Linux, and Windows.
 
+## 📸 Screenshots
+
+### Web Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Modules
+![Modules 1](screenshots/modules1.png)
+![Modules 2](screenshots/modules2.png)
+![Modules 3](screenshots/modules3.png)
+
+### CLI Support
+![CLI](screenshots/CLI.png)
+
 ## 🚀 Quick Start
 
 ### 1. Web Dashboard (Recommended)
