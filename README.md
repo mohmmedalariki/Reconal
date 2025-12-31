@@ -51,8 +51,8 @@ python3 reconal_cli.py -t example.com --list
 ## 📦 Installation
 Just clone the repo and run.
 ```bash
-git clone https://github.com/your/reconal.git
-cd reconal
+git clone https://github.com/mohmmedalariki/Reconal.git
+cd Reconal
 python3 reconal_web.py
 ```
 
