@@ -10,38 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  build-macos:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements_desktop.txt
-          pip install pillow
-
-      - name: Build macOS App
-        run: |
-          chmod +x build_macos.sh
-          ./build_macos.sh
-
-      - name: Upload DMG
-        uses: actions/upload-artifact@v4
-        with:
-          name: Reconal-macOS-DMG
-          path: Reconal_Installer.dmg
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: Reconal_Installer.dmg
+  # macOS build removed as per user request
 
   build-windows:
     runs-on: windows-latest
@@ -57,13 +26,22 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install -r requirements_desktop.txt
-          pip install pillow
+          pip install Pillow
 
       - name: Convert Icon
+        shell: python
         run: |
-          python -c "from PIL import Image; img = Image.open('Reconal_icon.png'); img.save('Reconal.ico', format='ICO', sizes=[(256, 256), (128, 128), (64, 64), (48, 48), (32, 32), (16, 16)])"
+          from PIL import Image
+          import os
+          if os.path.exists('Reconal_icon.png'):
+            img = Image.open('Reconal_icon.png')
+            img.save('Reconal.ico', format='ICO', sizes=[(256, 256), (128, 128), (64, 64), (48, 48), (32, 32), (16, 16)])
+          else:
+            print("Warning: Reconal_icon.png not found")
 
       - name: Build Windows Exe
+        # Using bash shell to handle quoting consistently
+        shell: bash
         run: |
            pyinstaller --noconsole --onefile --windowed --name "Reconal" --icon "Reconal.ico" --add-data "static;static" reconal_app.py
 
@@ -73,7 +51,7 @@ jobs:
           name: Reconal-Windows-Exe
           path: dist/Reconal.exe
 
-      - name: Release
+      - name: Release target
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
