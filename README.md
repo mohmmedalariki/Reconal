@@ -1,54 +1,75 @@
 # Reconal 🎯
+> **Advanced OSINT Reconnaissance Framework**
+> *Automate 70+ google dorks and detailed infrastructure analysis from a single native dashboard.*
 
-**Reconal** is a professional-grade OSINT reconnaissance tool designed for Bug Bounty hunters and Security Researchers. It automates over **70+ advanced Google Dorks** and search queries through a sleek, native desktop interface.
+![Banner](https://img.shields.io/badge/Status-Stable-success?style=for-the-badge) ![Python](https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge) ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-![Banner](https://img.shields.io/badge/Status-Active-success) ![Python](https://img.shields.io/badge/Python-3.x-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows-lightgrey)
+Reconal transforms tedious manual dorking into a streamlined workflow. Originally a command-line script, it is now a fully native desktop application that bridges Python's raw power with a modern, responsive interface. No web servers, no localhost exposure—just a standalone executable.
 
-## ✨ Features
+---
 
--   **Native Desktop App**: Runs as a standalone window (macOS .app / Windows .exe) using PyWebView.
--   **Zero-Config Dashboard**: responsive, dark-themed UI that connects directly to the recon engine.
--   **70+ Recon Modules**:
-    -   ☁️ **Cloud**: AWS S3, Azure Blob, Google Storage.
-    -   🔌 **API**: Swagger, GraphQL, WSDL.
-    -   🔓 **Leaks**: .env files, Pastebin, Trello, Source Maps.
-    -   🛠 **DevOps**: Jenkins, Travis CI, .git folders.
-    -   ⚡ **One-Click Launch**: Instantly opens targeted queries in your default browser.
+## ⚡ Features
 
-## 📸 Screenshots
+*   **Native Desktop Experience**: Zero-config standalone app (`.exe` / `.app`). No Python environment required for end-users.
+*   **70+ Recon Modules**:
+    *   **Cloud Recon**: S3 Buckets, Azure Blobs, DigitalOcean Spaces.
+    *   **Infrastructure**: Config files (`.env`, `.git`), Jenkins, Traefik, Logs.
+    *   **API Discovery**: Swagger UI, GraphQL, WSDL, Postman collections.
+*   **Secure Architecture**: Runs in an isolated WebView. No external ports opened.
+*   **Legacy CLI**: Includes a robust command-line interface for terminal workflows.
 
-### Native Dashboard
-![Dashboard](screenshots/dashboard.png)
+---
 
-### Advanced Modules
-![Modules](screenshots/modules1.png)
+## 📸 Interface
 
-## 🚀 Installation & Build
+| **Dashboard** | **Module Selection** |
+|:---:|:---:|
+| ![Dashboard](docs/screenshots/dashboard.png) | ![Modules](docs/screenshots/modules1.png) |
 
-Reconal is now a **native desktop application**. You can download the pre-built binaries from the [Releases](https://github.com/mohmmedalariki/Reconal/releases) page, or build it yourself from source.
+---
 
-### 🍎 Build for macOS
-Convert the python project into a native `.app` bundle and `.dmg` installer.
-See: [**Build Guide for macOS**](docs/build_macos.md)
+## 🚀 Installation
 
-### 🪟 Build for Windows
-Convert the project into a standalone `.exe`.
-See: [**Build Guide for Windows**](docs/build_windows.md)
+### Option A: Pre-built Binaries (Recommended)
+Download the latest stable release for your platform:
+*   **Windows**: [`Reconal.exe`](https://github.com/mohmmedalariki/Reconal/releases/latest)
+*   **macOS**: [`Reconal_Installer.dmg`](https://github.com/mohmmedalariki/Reconal/releases/latest)
 
-## 🛠 Usage
+### Option B: Build from Source
+If you are a developer or want to modify the core engine:
 
-### Development Mode
-You can run the app directly with Python if you prefer not to build the binary yet.
 ```bash
-pip install .
+# 1. Clone & Install
+git clone https://github.com/mohmmedalariki/Reconal.git
+cd Reconal
+pip install -e .
+
+# 2. Run Locally
 python -m reconal.app
 ```
 
-### CLI Support
-Prefer the terminal? The legacy CLI tool works out of the box.
+> **Build Your Own:**
+> *   [Building for Windows](docs/build_windows.md)
+> *   [Building for macOS](docs/build_macos.md)
+
+---
+
+## 🛠 CLI Usage
+Prefer the terminal? The engine is available directly:
+
 ```bash
-python reconal_cli.py -t example.com --list
+# Scan a target
+reconal-cli -t example.com --list
+
+# Launch specific module (e.g., #4)
+reconal-cli -t example.com -i 4
 ```
 
-## 🛡 Disclaimer
-This tool is for educational and ethical testing purposes only. Usage for attacking targets without prior mutual consent is illegal. 
+---
+
+## 📜 Legal & Disclaimer
+**Reconal is for educational and authorized security testing purposes only.**
+Usage of this tool for attacking targets without prior mutual consent is illegal. The developers assume no liability and are not responsible for any misuse or damage caused by this program.
+
+---
+*Maintained by [Mohmmed Alariki](https://github.com/mohmmedalariki)*
