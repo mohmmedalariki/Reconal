@@ -1,1 +1,48 @@
+# --- Build Artifacts (Do NOT commit) ---
+# PyInstaller output directories
+dist/
+build/
+*.spec
+
+# Windows Artifacts
+*.exe
+*.ico
+*.bat
+!build_windows.bat
+
+# macOS Artifacts
+*.app
+*.dmg
+*.icns
+.DS_Store
+
+# --- Runtime & Cache (Do NOT commit) ---
+# Python bytecode
 __pycache__/
+*.py[cod]
+*$py.class
+
+# PyWebView / System caches
+*.log
+*.pid
+
+# --- Dependencies (Do NOT commit) ---
+# Dependencies should be installed from requirements.txt or build scripts
+node_modules/
+package-lock.json
+
+# --- Environment & Secrets (Do NOT commit) ---
+.env
+.idea/
+.vscode/
+
+# --- Documentation (Keep) ---
+# Ensure these ARE tracked
+!README.md
+!README_DESKTOP.md
+!README_WINDOWS.md
+!reconal_app.py
+!reconal_cli.py
+!static/
+!Reconal_icon.png
+!screenshots/

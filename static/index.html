@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconal | Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --accent: #2ea043;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --border: #30363d;
+            --glow: rgba(46, 160, 67, 0.4);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            user-select: none; /* Make it feel more native */
+        }
+
+        header {
+            width: 100%;
+            padding: 2rem 0;
+            text-align: center;
+            background: linear-gradient(180deg, #161b22 0%, var(--bg-color) 100%);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            -webkit-app-region: drag; /* Allow dragging window by header */
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: var(--text-main);
+            letter-spacing: -1px;
+        }
+
+        .highlight {
+            color: var(--accent);
+            text-shadow: 0 0 15px var(--glow);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin-bottom: 3rem;
+        }
+
+        /* Search Section */
+        .search-box {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background: #0d1117;
+            border: 1px solid var(--border);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(46, 160, 67, 0.2);
+        }
+
+        .status {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Module Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s, background 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            background: #1c2128;
+        }
+
+        .card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .icon-box {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+        }
+
+        .icon-svg {
+            width: 20px !important;
+            height: 20px !important;
+            min-width: 20px;
+            min-height: 20px;
+            object-fit: contain;
+            fill: var(--text-muted);
+            transition: fill 0.2s;
+            display: block;
+            margin: 0 !important;
+        }
+
+        /* Notification Toast */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: var(--accent);
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
+    <!-- SimpleIcons CDN for offline support logic later, but for now we fallback nicely -->
+    <script src="https://cdn.jsdelivr.net/npm/simple-icons@v11/dist/simple-icons.min.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1>Recon<span class="highlight">al</span></h1>
+        <p style="color: var(--text-muted);">Native Desktop Dashboard</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="search-box">
+            <span style="font-size: 1.5rem;">🎯</span>
+            <input type="text" id="target" placeholder="Enter Target Domain (e.g., example.com)" autofocus>
+            <div class="status" id="target-status">Waiting for input...</div>
+        </div>
+
+        <div class="grid" id="module-grid">
+            <!-- Cards will be injected here by JS -->
+            <div style="color: var(--text-muted); padding: 2rem;">Loading modules...</div>
+        </div>
+
+    </div>
+
+    <div id="toast">Launched Module!</div>
+
+    <script>
+        let modules = [];
+        const grid = document.getElementById('module-grid');
+        const targetInput = document.getElementById('target');
+        const statusLabel = document.getElementById('target-status');
+        
+        // Manual map for icons
+        const iconMap = {
+            "Github": "siGithub",
+            "WordPress": "siWordpress",
+            "Jenkins": "siJenkins",
+            "Trello": "siTrello",
+            "DigitalOcean": "siDigitalocean",
+            "Azure": "siMicrosoftazure",
+            "Google": "siGooglecloud",
+            "Postman": "siPostman",
+            "Traefik": "siTraefikproxy",
+            "GitLab": "siGitlab",
+            "StackOverflow": "siStackoverflow",
+            "Reddit": "siReddit",
+            "Shodan": "siShodan",
+            "YouTube": "siYoutube",
+            "Yandex": "siYandex",
+            "LinkedIn": "siLinkedin",
+            "Apache": "siApache",
+            "Wait": "siArchiveofourown" // Placeholder for Wayback
+        };
+
+        const emojiMap = {
+            "Directory": "📂",
+            "Config": "⚙️",
+            "Database": "🗄️",
+            "SQL": "💉",
+            "Log": "📝",
+            "Backup": "💾",
+            "Login": "🔐",
+            "Documents": "📄",
+            "PHP": "🐘",
+            "Backdoor": "☠️",
+            "Shell": "🐚",
+            "Install": "💿",
+            "Redirect": "➡️",
+            "Header": "🛡️",
+            "Robots": "🤖",
+            "Crossdomain": "❌",
+            "Subdomain": "🌐",
+            "Buckets": "🪣", 
+            "Spaces": "☁️",
+            "Environment": "🌿",
+            "Source Map": "🗺️",
+            "Traefik": "🚦",
+            "WhatCMS": "❓",
+            "Throwbin": "🗑️",
+            "Pastebin": "📋",
+            "CRT": "📜",
+            "IP": "📍",
+            "Domain": "🏠"
+        };
+
+
+        // --- PyWebView Interface ---
+        
+        window.addEventListener('pywebviewready', function() {
+            console.log("PyWebView Ready - Fetching Modules");
+            fetchModules();
+        });
+
+        // Fallback for debugging in browser without python
+        setTimeout(() => {
+            if (!modules.length && typeof window.pywebview === 'undefined') {
+                 console.warn("PyWebView not detected - ensure you are running via the python app.");
+                 // grid.innerHTML = "Error: Use the desktop application.";
+            }
+        }, 3000);
+
+        async function fetchModules() {
+             try {
+                // Call Python API
+                const rawModules = await window.pywebview.api.get_modules();
+                modules = rawModules; // Raw objects
+                renderGrid(modules);
+             } catch (err) {
+                 console.error("Failed to load modules", err);
+                 grid.innerHTML = `<div style="color:red">Failed to load modules: ${err}</div>`;
+             }
+        }
+
+        async function launchModule(index) {
+            const target = targetInput.value.trim();
+            if (!target) {
+                showToast("⚠️ Enter a target domain first!");
+                targetInput.focus();
+                targetInput.style.borderColor = "#f85149";
+                setTimeout(() => targetInput.style.borderColor = "#30363d", 1000);
+                return;
+            }
+
+            showToast(`🚀 Launching: ${modules[index].name}`);
+            
+            // Call Python API to launch
+            // We pass index and target.
+            try {
+                await window.pywebview.api.launch_module(index, target);
+            } catch (err) {
+                console.error("Launch error", err);
+            }
+        }
+
+        // --- Rendering Logic (Same as before) ---
+
+        function getSimpleIcon(name) {
+            if (typeof SimpleIcons === 'undefined') return null;
+            for (const [key, slug] of Object.entries(iconMap)) {
+                if (name.includes(key) && SimpleIcons[slug]) {
+                    return SimpleIcons[slug];
+                }
+            }
+            if (name.includes("Database")) return SimpleIcons.siDatabricks; 
+            if (name.includes("Config")) return SimpleIcons.siCodeigniter;
+            if (name.includes("Login")) return SimpleIcons.siAuth0;
+            return null;
+        }
+
+        function getEmojiIcon(name) {
+            for (const [key, emoji] of Object.entries(emojiMap)) {
+                if (name.includes(key)) return emoji;
+            }
+            return null;
+        }
+
+        function renderGrid(mods) {
+            grid.innerHTML = '';
+            mods.forEach((mod, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => launchModule(index);
+                
+                let iconHtml = '';
+
+                if (mod.customIcon) {
+                    // Filesystem path, usually requires configuring pywebview to serve local files
+                    // or reading them as base64. 
+                    // However, pywebview handles relative paths in index.html if configured correctly.
+                    // For now, we assume images are relative to index.html
+                    iconHtml = `<img src="${mod.customIcon}" class="icon-svg" alt="${mod.name}">`;
+                } else {
+                    let iconObj = null;
+                    try { iconObj = getSimpleIcon(mod.name); } catch (e) {}
+
+                    if (iconObj) {
+                        let svgContent = iconObj.svg;
+                        svgContent = svgContent.replace('<svg', '<svg class="icon-svg"');
+                        iconHtml = svgContent;
+                    } else {
+                        const emoji = getEmojiIcon(mod.name);
+                        if (emoji) {
+                            iconHtml = `<span style="font-size: 1.25rem; line-height: 1;">${emoji}</span>`;
+                        } else {
+                           iconHtml = '<svg class="icon-svg" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>';
+                        }
+                    }
+                }
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="icon-box">
+                            ${iconHtml}
+                        </div>
+                        <h3>${mod.name}</h3>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function showToast(message) {
+            const x = document.getElementById("toast");
+            x.innerText = message;
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        }
+
+        targetInput.addEventListener('input', (e) => {
+            if (e.target.value.length > 3) {
+                statusLabel.innerText = "Target Set: " + e.target.value;
+                statusLabel.style.color = "var(--accent)";
+            } else {
+                statusLabel.innerText = "Waiting for input...";
+                statusLabel.style.color = "var(--text-muted)";
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -1,59 +1,53 @@
 # Reconal 🎯
 
-**Reconal** is a powerful, zero-dependency OSINT reconnaissance tool. It automates over 70+ Google Dorks and advanced search queries to help finding Bug Bounties and security vulnerabilities.
+**Reconal** is a professional-grade OSINT reconnaissance tool designed for Bug Bounty hunters and Security Researchers. It automates over **70+ advanced Google Dorks** and search queries through a sleek, native desktop interface.
 
-![Banner](https://img.shields.io/badge/Status-Active-success) ![Python](https://img.shields.io/badge/Python-3.x-blue) ![License](https://img.shields.io/badge/License-MIT-green)
+![Banner](https://img.shields.io/badge/Status-Active-success) ![Python](https://img.shields.io/badge/Python-3.x-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows-lightgrey)
 
 ## ✨ Features
 
--   **Zero Dependencies**: Runs on standard Python 3 libraries. No `pip install` needed.
--   **Modern Web Dashboard**: Dark-themed, responsive UI.
+-   **Native Desktop App**: Runs as a standalone window (macOS .app / Windows .exe) using PyWebView.
+-   **Zero-Config Dashboard**: responsive, dark-themed UI that connects directly to the recon engine.
 -   **70+ Recon Modules**:
     -   ☁️ **Cloud**: AWS S3, Azure Blob, Google Storage.
     -   🔌 **API**: Swagger, GraphQL, WSDL.
     -   🔓 **Leaks**: .env files, Pastebin, Trello, Source Maps.
     -   🛠 **DevOps**: Jenkins, Travis CI, .git folders.
--   **Cross-Platform**: Works on macOS, Linux, and Windows.
+    -   ⚡ **One-Click Launch**: Instantly opens targeted queries in your default browser.
 
 ## 📸 Screenshots
 
-### Web Dashboard
+### Native Dashboard
 ![Dashboard](screenshots/dashboard.png)
 
-### Modules
-![Modules 1](screenshots/modules1.png)
-![Modules 2](screenshots/modules2.png)
-![Modules 3](screenshots/modules3.png)
+### Advanced Modules
+![Modules](screenshots/modules1.png)
 
-### CLI Support
-![CLI](screenshots/CLI.png)
+## 🚀 Installation & Build
 
-## 🚀 Quick Start
+Reconal is now a **native desktop application**. You can download the pre-built binaries from the [Releases](https://github.com/mohmmedalariki/Reconal/releases) page, or build it yourself from source.
 
-### 1. Web Dashboard (Recommended)
-This launches the professional GUI in your browser.
-```bash
-python3 reconal_web.py
-```
-Open `http://localhost:8080` (or the port shown in terminal).
+### 🍎 Build for macOS
+Convert the python project into a native `.app` bundle and `.dmg` installer.
+See: [**Build Guide for macOS**](README_DESKTOP.md)
 
-### 2. CLI Mode
-For terminal users:
-```bash
-python3 reconal_cli.py -t example.com --list
-```
+### 🪟 Build for Windows
+Convert the project into a standalone `.exe`.
+See: [**Build Guide for Windows**](README_WINDOWS.md)
 
 ## 🛠 Usage
-1.  **Enter Target**: Type the domain you want to investigate (e.g., `uber.com`).
-2.  **Select Module**: Click on a card (e.g., "Directory Listing", "S3 Buckets").
-3.  **Analyze**: A new tab opens with the specific search query executed.
 
-## 📦 Installation
-Just clone the repo and run.
+### Development Mode
+You can run the app directly with Python if you prefer not to build the binary yet.
 ```bash
-git clone https://github.com/mohmmedalariki/Reconal.git
-cd Reconal
-python3 reconal_web.py
+pip install -r requirements_desktop.txt
+python reconal_app.py
+```
+
+### CLI Support
+Prefer the terminal? The legacy CLI tool works out of the box.
+```bash
+python reconal_cli.py -t example.com --list
 ```
 
 ## 🛡 Disclaimer
