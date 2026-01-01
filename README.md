@@ -29,19 +29,19 @@ Reconal is now a **native desktop application**. You can download the pre-built 
 
 ### 🍎 Build for macOS
 Convert the python project into a native `.app` bundle and `.dmg` installer.
-See: [**Build Guide for macOS**](README_DESKTOP.md)
+See: [**Build Guide for macOS**](docs/build_macos.md)
 
 ### 🪟 Build for Windows
 Convert the project into a standalone `.exe`.
-See: [**Build Guide for Windows**](README_WINDOWS.md)
+See: [**Build Guide for Windows**](docs/build_windows.md)
 
 ## 🛠 Usage
 
 ### Development Mode
 You can run the app directly with Python if you prefer not to build the binary yet.
 ```bash
-pip install -r requirements_desktop.txt
-python reconal_app.py
+pip install .
+python -m reconal.app
 ```
 
 ### CLI Support

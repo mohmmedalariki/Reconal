@@ -1,18 +1,17 @@
-import sys
 import webbrowser
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
 import webview
-import reconal_cli
+from . import cli as reconal_cli  # Relative import for package structure
 
 
 class BridgeApi:
     """Native API Bridge connecting Python backend to PyWebView frontend."""
 
-    def __init__(self, static_dir: Path):
-        self.static_dir = static_dir
-        self.icons_dir = static_dir / "icons"
+    def __init__(self, gui_dir: Path):
+        self.gui_dir = gui_dir
+        self.assets_dir = gui_dir / "assets"
 
     def get_modules(self) -> List[Dict[str, Any]]:
         """
@@ -21,18 +20,18 @@ class BridgeApi:
         modules = reconal_cli.get_modules()
         
         # Optimize: Check for icons using O(1) direct path lookup
-        # normalized_name -> path (e.g. "github" -> "icons/github.svg")
+        # normalized_name -> path (e.g. "github" -> "assets/github.svg")
         cleaned_modules = []
 
         for m in modules:
             name_key = m["name"].lower().replace(" ", "")
             
-            # Direct check: does icons/namekey.svg exist?
-            icon_path = self.icons_dir / f"{name_key}.svg"
+            # Direct check: does assets/namekey.svg exist?
+            icon_path = self.assets_dir / f"{name_key}.svg"
             
             mod_data = {"name": m["name"]}
             if icon_path.exists():
-                mod_data["customIcon"] = f"icons/{name_key}.svg"
+                mod_data["customIcon"] = f"assets/{name_key}.svg"
                 
             cleaned_modules.append(mod_data)
 
@@ -70,14 +69,26 @@ def get_resource_path() -> Path:
 def main() -> None:
     """Application Entry Point."""
     base_path = get_resource_path()
-    static_path = base_path / "static"
-    index_file = static_path / "index.html"
+    
+    # In src layout, this file is in src/reconal/app.py
+    # Debug mode: base_path is src/reconal/
+    # Frozen mode: base_path is temp/_MEIPASS/reconal (if we bundle correctly)
+    
+    gui_path = base_path / "gui"
+    index_file = gui_path / "index.html"
+
+    if not index_file.exists():
+        # Fallback for dev mode if we are running from root
+        # If running from root as `python -m src.reconal.app`
+        if (Path.cwd() / "src/reconal/gui").exists():
+             gui_path = Path.cwd() / "src/reconal/gui"
+             index_file = gui_path / "index.html"
 
     if not index_file.exists():
         print(f"[!] Fatal: UI not found at {index_file}")
         sys.exit(1)
 
-    api = BridgeApi(static_dir=static_path)
+    api = BridgeApi(gui_dir=gui_path)
     
     # Initialize Native Window
     webview.create_window(

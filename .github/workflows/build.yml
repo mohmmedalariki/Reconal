@@ -22,11 +22,17 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
-          cache-dependency-path: requirements_desktop.txt
+          # We use pyproject.toml now, but setup-python usually looks for requirements.txt or poetry.lock
+          # We can rely on pip install . caching packages.
+          # For simplicity with setup-python cache, we can skip explicit cache-dependency-path 
+          # OR create a temporary requirements.txt via pip freeze if needed, but let's just cache 'pip' generically.
+          # Or point to pyproject.toml if supported (experimental/specific tools needed).
+          # Let's simple use 'pip' cache.
 
       - name: Install Dependencies
         run: |
-          pip install -r requirements_desktop.txt
+          pip install .
+          # Pillow is technically in pyproject.toml now, but ensuring it's installed for the icon script below:
           pip install Pillow
 
       - name: Convert Icon
@@ -34,17 +40,18 @@ jobs:
         run: |
           from PIL import Image
           import os
-          if os.path.exists('Reconal_icon.png'):
-            img = Image.open('Reconal_icon.png')
+          icon_path = 'src/reconal/gui/assets/logo.png'
+          if os.path.exists(icon_path):
+            img = Image.open(icon_path)
             img.save('Reconal.ico', format='ICO', sizes=[(256, 256), (128, 128), (64, 64), (48, 48), (32, 32), (16, 16)])
           else:
-            print("Warning: Reconal_icon.png not found")
+            print(f"Warning: {icon_path} not found")
 
       - name: Build Windows Exe
-        # Using bash shell to handle quoting consistently
         shell: bash
+        # Source: src/reconal/gui -> Destination: gui
         run: |
-           pyinstaller --noconsole --onefile --windowed --name "Reconal" --icon "Reconal.ico" --add-data "static;static" reconal_app.py
+           pyinstaller --noconsole --onefile --windowed --name "Reconal" --icon "Reconal.ico" --add-data "src/reconal/gui;gui" src/reconal/app.py
 
       - name: Upload Exe
         uses: actions/upload-artifact@v4

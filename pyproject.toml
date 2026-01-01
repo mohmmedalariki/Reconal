@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reconal"
+version = "1.0.1"
+description = "Professional OSINT Reconnaissance Tool"
+readme = "README.md"
+authors = [
+  { name = "Mohmmed Alariki", email = "mohmmedalariki@example.com" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "pywebview>=5.0",
+    "Pillow>=10.0"
+]
+
+[project.scripts]
+reconal = "reconal.app:main"
+reconal-cli = "reconal.cli:main"
+
+[project.urls]
+"Homepage" = "https://github.com/mohmmedalariki/Reconal"
+"Bug Tracker" = "https://github.com/mohmmedalariki/Reconal/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
