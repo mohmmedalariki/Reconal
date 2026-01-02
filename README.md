@@ -6,6 +6,8 @@
 
 Reconal transforms tedious manual dorking into a streamlined workflow. Originally a command-line script, it is now a fully native desktop application that bridges Python's raw power with a modern, responsive interface. No web servers, no localhost exposure—just a standalone executable.
 
+
+![Reconal](docs/screenshots/Recon.jpeg) | 
 ---
 
 ## ⚡ Features
