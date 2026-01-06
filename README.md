@@ -34,6 +34,7 @@ Reconal transforms tedious manual dorking into a streamlined workflow. Originall
 Download the latest stable release for your platform:
 *   **Windows**: [`Reconal.exe`](https://github.com/mohmmedalariki/Reconal/releases/latest)
 *   **macOS**: [`Reconal_Installer.dmg`](https://github.com/mohmmedalariki/Reconal/releases/latest)
+*   **Linux**: [`Reconal_Linux`](https://github.com/mohmmedalariki/Reconal/releases/latest)
 
 ### Option B: Build from Source
 If you are a developer or want to modify the core engine:
@@ -51,6 +52,7 @@ python -m reconal.app
 > **Build Your Own:**
 > *   [Building for Windows](docs/build_windows.md)
 > *   [Building for macOS](docs/build_macos.md)
+> *   [Building for Linux](docs/build_linux.md)
 
 ---
 
